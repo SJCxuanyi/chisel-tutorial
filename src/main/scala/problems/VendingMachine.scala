@@ -22,8 +22,33 @@ class VendingMachine extends Module {
   val state = RegInit(sIdle)
 
   // Implement below ----------
-
-  state := s5
+  when(state ===  sIdle){
+    when(io.nickel){
+      state := s5
+    }.elsewhen(io.dime){
+      state := s10
+    }.otherwise{state := state}
+  }.elsewhen(state === s5){
+    when(io.nickel){
+      state := s10
+    }.elsewhen(io.dime){
+      state := s15
+    }.otherwise{}
+  }.elsewhen(state === s10){
+    when(io.nickel){
+      state := s15
+    }.elsewhen(io.dime){
+      state := sOk
+    }.otherwise{}
+  }.elsewhen(state === s15){
+    when(io.nickel) {
+      state := sOk
+    }.elsewhen(io.dime) {
+      state := sOk
+    }.otherwise{}
+  }.elsewhen(state === sOk){
+    state := sIdle
+  }.otherwise{}
 
   // Implement above ----------
 

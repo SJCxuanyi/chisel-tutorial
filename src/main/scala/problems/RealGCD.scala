@@ -20,7 +20,28 @@ class RealGCD extends Module {
   })
 
   // Implement below ----------
+  val x = Reg(UInt(16.W))
+  val y = Reg(UInt(16.W))
+  val ready = RegInit(true.B)
+  io.in.ready := ready
+  when(io.in.valid && io.in.ready){
+    x := io.in.bits.a
+    y := io.in.bits.b
+    ready := false.B
+  }
+  when(!ready){
+    when(x > y) {
+      x := x - y
+    }.otherwise {
+      y := y - x
+    }
+  }
 
+  io.out.valid := (y === 0.U && !ready)
+  io.out.bits := x
+  when(io.out.valid){
+    ready := true.B
+  }
   // Implement above ----------
 
 }

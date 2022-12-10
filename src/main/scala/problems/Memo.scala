@@ -23,7 +23,13 @@ class Memo extends Module {
   val mem = Mem(256, UInt(8.W))
 
   // Implement below ----------
-
+  when(io.wen){
+    mem.write(io.wrAddr, io.wrData)
+  }
+  io.rdData := 0.U
+  when(io.ren){
+    io.rdData := mem.read(io.rdAddr)
+  }
   // Implement above ----------
 
 }
